@@ -105,7 +105,7 @@ export const TextField = forwardRef<HTMLInputElement, TextFieldProps>(
                     className={error ? "text-red-600" : ""}
                     style={{
                         visibility: error ? "visible" : "hidden",
-                        minHeight: 14
+                        minHeight: helperText ? 14 : 0
                     }}
                 >
                     {helperText}

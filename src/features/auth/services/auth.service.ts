@@ -1,45 +1,53 @@
-import { apiPOST } from "@app/api/client";
-import { useAuthStore } from "@app/store/auth/auth.store";
+import { browserLocalPersistence, browserSessionPersistence, createUserWithEmailAndPassword, sendEmailVerification, setPersistence, signInWithEmailAndPassword, signOut } from "firebase/auth"
+import { auth } from "../../../firebase/config"
 
-
-type LoginResponse = {
-  token: string,
-  user: {
-    id: number,
-    email: string,
-    role: 'ORGANIZER' | 'TEAM_ADMIN'
-    is_onboarded: boolean
+export const handleSignup = async (email: string, pass: string) => {
+  try {
+    const userCredential = await createUserWithEmailAndPassword(auth, email, pass);
+    // await sendEmailVerification(userCredential.user);
+  } catch (err: any) {
+    console.error("Auth Error", err.code)
   }
 }
 
-export interface AuthInput {
-  email: string
-  password: string
-  role?: "ORGANIZER" | "TEAM_ADMIN"
-}
 
 
+export const handleLogin = async (email: string, pass: string, rememberMe: boolean = true) => {
+  console.log(email, pass)
+  try {
+    const persistenceType = rememberMe ? browserLocalPersistence : browserSessionPersistence;
+    await setPersistence(auth, persistenceType);
 
-export async function login({ email, password }: AuthInput) {
-  const data: LoginResponse = await apiPOST("/auth/login", {
-    body: JSON.stringify({ email, password })
-  });
+    const userCredential = await signInWithEmailAndPassword(auth, email, pass);
 
-  return data
-}
+    if (!userCredential.user.emailVerified) {
+      console.warn("Please verify your email to access all features.");
+    }
 
-export async function signup({ email, password, role }: AuthInput) {
-  const data: LoginResponse = await apiPOST("/auth/register", {
-    body: JSON.stringify({ email, password, role })
-  })
+    return userCredential.user;
+  } catch (err: any) {
+    switch (err.code) {
+      case 'auth/invalid-credential':
+        console.error("Invalid email or password.");
+        break;
+      case 'auth/user-disabled':
+        console.error("This account has been disabled.");
+        break;
+      case 'auth/too-many-requests':
+        console.error("Too many failed attempts. Try again later.");
+        break;
+      default:
+        console.error("Login Error:", err.code);
+    }
+    throw err;
+  }
+};
 
-  return data
-}
 
-export async function logout() {
-  useAuthStore.getState().logout();
-  await apiPOST("/auth/logout", { method: "POST" });
-}
-
-
-//export async function refreshToken() {}
+export const handleLogout = async () => {
+  try {
+    await signOut(auth);
+  } catch (err) {
+    console.error("Logout Error", err);
+  }
+};

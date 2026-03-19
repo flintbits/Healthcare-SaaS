@@ -1,10 +1,12 @@
 import { Link, useNavigate } from "@tanstack/react-router";
-import useFormEngine from "../../../app/hooks/useFormEngine";
-import type { AuthFieldType } from "../types/auth.types";
 import type { LucideIcon } from "lucide-react";
-import Typography from "../../../shared/ui/Typography/Typography";
-import { TextField } from "../../../shared/ui/Inputs/TextField/TextField";
+import { useCallback } from "react";
+import useFormEngine from "../../../app/hooks/useFormEngine";
 import { Button } from "../../../shared/ui/Button/Button";
+import { TextField } from "../../../shared/ui/Inputs/TextField/TextField";
+import Typography from "../../../shared/ui/Typography/Typography";
+import { handleLogin, handleSignup } from "../services/auth.service";
+import type { AuthFieldType } from "../types/auth.types";
 
 type AuthFormProps = {
   schema: (AuthFieldType & {
@@ -18,31 +20,43 @@ export default function AuthForm({
   schema,
   formType,
 }: AuthFormProps) {
-  const { formData, onChange, errors, checkAllFields } =
-    useFormEngine<AuthFieldType>(schema);
 
+  const { formData, onChange, errors, checkAllFields } = useFormEngine<AuthFieldType>(schema);
   const navigate = useNavigate();
-
   const isLogin = formType === "login";
 
-  const handleLogin = async (
-    e: React.FormEvent<HTMLFormElement>
-  ) => {
-    e.preventDefault();
 
-    const validationErrors = checkAllFields();
+  const submitAuth = useCallback(async () => {
+    if (!isLogin) {
+      await handleSignup(formData.email, formData.password)
+    } else {
+      await handleLogin(formData.email, formData.password)
+    }
+  }, [isLogin, formData, handleSignup, handleLogin])
 
-    if (Object.values(validationErrors).some(Boolean))
-      return;
-  };
+
+  const handleSubmit = useCallback(async (e: React.SubmitEvent<HTMLFormElement>) => {
+    e.preventDefault()
+
+    const errors = checkAllFields()
+    if (Object.values(errors).some(Boolean)) return
+
+    try {
+      await submitAuth()
+
+      navigate({
+        to: "/dashboard",
+        replace: true,
+      })
+    } catch (err) {
+      console.error(err)
+    }
+  },
+    [submitAuth, navigate]
+  )
 
   return (
     <section className="w-full max-w-md mx-auto flex flex-col">
-      {isLogin && (
-        <p className="text-sm text-gray-500 mb-2">
-          use: test5@mail.com and 12345678
-        </p>
-      )}
 
       <Typography as="h1" weight="bold">
         {isLogin
@@ -50,9 +64,8 @@ export default function AuthForm({
           : "Create Your Account"}
       </Typography>
 
-      {/* form */}
       <form
-        onSubmit={handleLogin}
+        onSubmit={handleSubmit}
         className="flex flex-col gap-2 mt-3"
       >
         {schema.map((field) => {
@@ -80,10 +93,9 @@ export default function AuthForm({
 
         })}
 
+        <Button type="submit" variant="accent">Submit</Button>
       </form>
-      <Button variant="accent">Submit</Button>
 
-      {/* bottom link */}
       {formType === "login" ? (
         <Typography
           as="p"
@@ -91,7 +103,7 @@ export default function AuthForm({
           size="text-base"
           className="mt-3"
         >
-          Dont have an Account?{" "}
+          Dont have an Account?
           <Link
             to="/signup"
             className="text-(--color-accent) no-underline"
