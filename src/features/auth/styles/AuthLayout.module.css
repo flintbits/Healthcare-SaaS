@@ -1,0 +1,12 @@
+.auth {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  width: 100vw;
+}
+
+.authContainer {
+  padding: var(--space-layout-2xl);
+  width: 620px;
+}

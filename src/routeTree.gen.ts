@@ -9,9 +9,16 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as WithoutNavbarRouteImport } from './routes/_without-navbar'
 import { Route as WithNavbarRouteImport } from './routes/_with-navbar'
 import { Route as WithNavbarIndexRouteImport } from './routes/_with-navbar/index'
+import { Route as WithoutNavbarSignupRouteImport } from './routes/_without-navbar/signup'
+import { Route as WithoutNavbarLoginRouteImport } from './routes/_without-navbar/login'
 
+const WithoutNavbarRoute = WithoutNavbarRouteImport.update({
+  id: '/_without-navbar',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const WithNavbarRoute = WithNavbarRouteImport.update({
   id: '/_with-navbar',
   getParentRoute: () => rootRouteImport,
@@ -21,32 +28,63 @@ const WithNavbarIndexRoute = WithNavbarIndexRouteImport.update({
   path: '/',
   getParentRoute: () => WithNavbarRoute,
 } as any)
+const WithoutNavbarSignupRoute = WithoutNavbarSignupRouteImport.update({
+  id: '/signup',
+  path: '/signup',
+  getParentRoute: () => WithoutNavbarRoute,
+} as any)
+const WithoutNavbarLoginRoute = WithoutNavbarLoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => WithoutNavbarRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof WithNavbarIndexRoute
+  '/login': typeof WithoutNavbarLoginRoute
+  '/signup': typeof WithoutNavbarSignupRoute
 }
 export interface FileRoutesByTo {
   '/': typeof WithNavbarIndexRoute
+  '/login': typeof WithoutNavbarLoginRoute
+  '/signup': typeof WithoutNavbarSignupRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/_with-navbar': typeof WithNavbarRouteWithChildren
+  '/_without-navbar': typeof WithoutNavbarRouteWithChildren
+  '/_without-navbar/login': typeof WithoutNavbarLoginRoute
+  '/_without-navbar/signup': typeof WithoutNavbarSignupRoute
   '/_with-navbar/': typeof WithNavbarIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths: '/' | '/login' | '/signup'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/_with-navbar' | '/_with-navbar/'
+  to: '/' | '/login' | '/signup'
+  id:
+    | '__root__'
+    | '/_with-navbar'
+    | '/_without-navbar'
+    | '/_without-navbar/login'
+    | '/_without-navbar/signup'
+    | '/_with-navbar/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   WithNavbarRoute: typeof WithNavbarRouteWithChildren
+  WithoutNavbarRoute: typeof WithoutNavbarRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/_without-navbar': {
+      id: '/_without-navbar'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof WithoutNavbarRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/_with-navbar': {
       id: '/_with-navbar'
       path: ''
@@ -60,6 +98,20 @@ declare module '@tanstack/react-router' {
       fullPath: '/'
       preLoaderRoute: typeof WithNavbarIndexRouteImport
       parentRoute: typeof WithNavbarRoute
+    }
+    '/_without-navbar/signup': {
+      id: '/_without-navbar/signup'
+      path: '/signup'
+      fullPath: '/signup'
+      preLoaderRoute: typeof WithoutNavbarSignupRouteImport
+      parentRoute: typeof WithoutNavbarRoute
+    }
+    '/_without-navbar/login': {
+      id: '/_without-navbar/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof WithoutNavbarLoginRouteImport
+      parentRoute: typeof WithoutNavbarRoute
     }
   }
 }
@@ -76,8 +128,23 @@ const WithNavbarRouteWithChildren = WithNavbarRoute._addFileChildren(
   WithNavbarRouteChildren,
 )
 
+interface WithoutNavbarRouteChildren {
+  WithoutNavbarLoginRoute: typeof WithoutNavbarLoginRoute
+  WithoutNavbarSignupRoute: typeof WithoutNavbarSignupRoute
+}
+
+const WithoutNavbarRouteChildren: WithoutNavbarRouteChildren = {
+  WithoutNavbarLoginRoute: WithoutNavbarLoginRoute,
+  WithoutNavbarSignupRoute: WithoutNavbarSignupRoute,
+}
+
+const WithoutNavbarRouteWithChildren = WithoutNavbarRoute._addFileChildren(
+  WithoutNavbarRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   WithNavbarRoute: WithNavbarRouteWithChildren,
+  WithoutNavbarRoute: WithoutNavbarRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

@@ -1,5 +1,39 @@
 @import "tailwindcss";
 
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  box-sizing: border-box;
+  font-family: var(--font-family);
+  font-size: clamp(0.95rem, 1.2vw, 1.1rem);
+  line-height: var(--line-height-normal);
+  color: var(--color-text-secondary);
+  background-color: var(--color-bg);
+}
+
+/* ---------- Typography Defaults ---------- */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--title-font-family);
+}
+
+p {
+  font-family: var(--font-family);
+}
+
 :root {
   --color-bg: var(--theme-bg);
   --color-bg-secondary: var(--theme-bg-secondary);
