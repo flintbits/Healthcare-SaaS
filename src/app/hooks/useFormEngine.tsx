@@ -1,7 +1,7 @@
 
 import { useState } from "react"
-import type { BaseField, ValidatorFnType } from "../../shared/validation-engine/types/rules.type"
 import { attachValidators } from "../../shared/validation-engine/attachValidators"
+import type { BaseField, ValidatorFnType } from "../../shared/validation-engine/types/rules.type"
 
 
 type CompiledField<T extends BaseField> =

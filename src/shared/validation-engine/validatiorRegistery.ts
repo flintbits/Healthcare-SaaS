@@ -1,4 +1,4 @@
-import type { LengthConstraints, ValidatorFactory } from "./types/rules.type"
+import type { MaxLengthConstraints, MinLengthConstraints, ValidatorFactory } from "./types/rules.type"
 
 
 
@@ -9,7 +9,7 @@ export const validatorRegistery: Record<string, ValidatorFactory> = {
       return null
     }
   },
-  minLength: (constraints: LengthConstraints) => {
+  minLength: (constraints: MinLengthConstraints) => {
     return (value: string) => {
       if (value.trim().length < constraints.minLength) {
         return `Must be at least ${constraints.minLength} characters`
@@ -17,10 +17,10 @@ export const validatorRegistery: Record<string, ValidatorFactory> = {
       return null
     }
   },
-  maxLength: (constraints: LengthConstraints) => {
+  maxLength: (constraints: MaxLengthConstraints) => {
     return (value: string) => {
-      if (value.trim().length > constraints.minLength) {
-        return `Must be less than ${constraints.minLength} characters`
+      if (value.trim().length > constraints.maxLength) {
+        return `Must be less than ${constraints.maxLength} characters`
       }
       return null
     }

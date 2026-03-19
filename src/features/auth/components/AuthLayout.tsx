@@ -8,7 +8,7 @@ type AuthLayoutProps = {
 }
 
 export default function AuthLayout({ type }: AuthLayoutProps) {
-  const schema = useMemo(() => type === 'signup' ? SignupFormSchema : LoginFormSchema, [type])
+  const schema: any = useMemo(() => type === 'signup' ? SignupFormSchema : LoginFormSchema, [type])
   return (
     <section className={styles.auth}>
       <section className={styles.authContainer}>

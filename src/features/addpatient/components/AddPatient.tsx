@@ -1,21 +1,22 @@
 import { Link, useNavigate } from "@tanstack/react-router";
+import type { LucideIcon } from "lucide-react";
 import { useCallback } from "react";
 import useFormEngine from "../../../app/hooks/useFormEngine";
-import FormComponent from "../../../components/Form/FormComponent";
-import type { FieldWithIconType } from "../../../components/Form/FormComponent.types";
+import { Button } from "../../../shared/ui/Button/Button";
+import { TextField } from "../../../shared/ui/Inputs/TextField/TextField";
 import Typography from "../../../shared/ui/Typography/Typography";
-import type { BaseField } from "../../../shared/validation-engine/types/rules.type";
-import { handleLogin, handleSignup } from "../services/auth.service";
 
-
-type FormProps = {
-  schema: FieldWithIconType[]
+type AuthFormProps = {
+  schema: (AuthFieldType & {
+    leftIcon?: LucideIcon;
+    rightIcon?: LucideIcon;
+  })[];
   formType: string;
 };
 
-export default function AuthForm({ schema, formType, }: FormProps) {
-  const { formData, onChange, errors, checkAllFields } = useFormEngine<BaseField>(schema as BaseField[]);
+export default function AddPatient({ schema, formType }: AuthFormProps) {
 
+  const { formData, onChange, errors, checkAllFields } = useFormEngine<AuthFieldType>(schema);
   const navigate = useNavigate();
   const isLogin = formType === "login";
 
@@ -58,13 +59,37 @@ export default function AuthForm({ schema, formType, }: FormProps) {
           : "Create Your Account"}
       </Typography>
 
-      <FormComponent
-        schema={schema}
-        formData={formData}
-        handleSubmit={handleSubmit}
-        onChange={onChange}
-        errors={errors}
-      />
+      <form
+        onSubmit={handleSubmit}
+        className="flex flex-col gap-2 mt-3"
+      >
+        {schema.map((field) => {
+          const fieldType = field.type;
+
+          return <TextField
+            key={field.id}
+            id={field.id}
+            value={formData[field.id] ?? ""}
+            type={field.type}
+            label={field.label}
+            placeholder={field.placeholder}
+            isPassword={!!field.isPassword}
+            onChange={(e) =>
+              onChange(
+                e.target.value,
+                field.id
+              )
+            }
+            LeftIcon={field.leftIcon}
+            RightIcon={field.rightIcon}
+            error={!!errors[field.id]}
+            helperText={errors[field.id] ?? ""}
+          />
+
+        })}
+
+        <Button type="submit" variant="accent">Submit</Button>
+      </form>
 
       {formType === "login" ? (
         <Typography
@@ -97,7 +122,6 @@ export default function AuthForm({ schema, formType, }: FormProps) {
           </Link>
         </Typography>
       )}
-
     </section>
   );
 }
