@@ -1,10 +1,10 @@
 import { Link, useNavigate } from "@tanstack/react-router";
 import { useCallback } from "react";
 import useFormEngine from "../../../app/hooks/useFormEngine";
-import FormComponent from "../../../components/Form/FormComponent";
-import type { FieldWithIconType } from "../../../components/Form/FormComponent.types";
 import Typography from "../../../shared/ui/Typography/Typography";
 import type { BaseField } from "../../../shared/validation-engine/types/rules.type";
+import FormComponent from "../../Form/FormComponent";
+import type { FieldWithIconType } from "../../Form/FormComponent.types";
 import { handleLogin, handleSignup } from "../services/auth.service";
 
 
@@ -22,7 +22,7 @@ export default function AuthForm({ schema, formType, }: FormProps) {
 
   const submitAuth = useCallback(async () => {
     if (!isLogin) {
-      await handleSignup(formData.email, formData.password)
+      await handleSignup(formData.name, formData.email, formData.password)
     } else {
       await handleLogin(formData.email, formData.password)
     }

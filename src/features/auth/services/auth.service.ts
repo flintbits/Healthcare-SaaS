@@ -1,10 +1,33 @@
-import { browserLocalPersistence, browserSessionPersistence, createUserWithEmailAndPassword, sendEmailVerification, setPersistence, signInWithEmailAndPassword, signOut } from "firebase/auth"
-import { auth } from "../../../firebase/config"
+import { browserLocalPersistence, browserSessionPersistence, createUserWithEmailAndPassword, setPersistence, signInWithEmailAndPassword, signOut } from "firebase/auth";
+import { doc, getDoc, setDoc, Timestamp } from "firebase/firestore";
+import { auth } from "../../../firebase/config";
+import { db } from "../../../firebase/firestore";
+import { useAuthStore } from "../../../store/auth.store";
 
-export const handleSignup = async (email: string, pass: string) => {
+export const handleSignup = async (name: string, email: string, pass: string) => {
   try {
+    //firebase auth
     const userCredential = await createUserWithEmailAndPassword(auth, email, pass);
-    // await sendEmailVerification(userCredential.user);
+
+    const user = userCredential.user;
+
+    //firestore
+    await setDoc(doc(db, "users", user.uid), {
+      name: name,
+      email: user.email,
+      role: "doctor",
+      createdAt: Timestamp.now()
+    })
+
+    // zustand
+    useAuthStore.getState().setUser({
+      uid: user.uid,
+      name: name,
+      email: user.email,
+    })
+
+    return user
+
   } catch (err: any) {
     console.error("Auth Error", err.code)
   }
@@ -20,11 +43,26 @@ export const handleLogin = async (email: string, pass: string, rememberMe: boole
 
     const userCredential = await signInWithEmailAndPassword(auth, email, pass);
 
+    const user = userCredential.user;
+
+    // get firestore user
+    const docRef = doc(db, "users", user.uid);
+    const snap = await getDoc(docRef);
+
+    const userData = snap.data();
+
+    // store in zustand
+    useAuthStore.getState().setUser({
+      uid: user.uid,
+      email: user.email,
+      name: userData?.name,
+    });
+
     if (!userCredential.user.emailVerified) {
       console.warn("Please verify your email to access all features.");
     }
 
-    return userCredential.user;
+    return user;
   } catch (err: any) {
     switch (err.code) {
       case 'auth/invalid-credential':
@@ -47,6 +85,9 @@ export const handleLogin = async (email: string, pass: string, rememberMe: boole
 export const handleLogout = async () => {
   try {
     await signOut(auth);
+
+    useAuthStore.getState().setUser(null);
+
   } catch (err) {
     console.error("Logout Error", err);
   }

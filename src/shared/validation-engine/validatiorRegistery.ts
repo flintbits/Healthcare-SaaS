@@ -5,7 +5,8 @@ import type { MaxLengthConstraints, MinLengthConstraints, ValidatorFactory } fro
 export const validatorRegistery: Record<string, ValidatorFactory> = {
   required: () => {
     return (value: string) => {
-      if (!value) return "Field is required"
+      if (value === undefined || value === null) return "Field is required"
+      if (typeof value === "string" && value.trim().length === 0) return "Field is required"
       return null
     }
   },

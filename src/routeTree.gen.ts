@@ -14,6 +14,7 @@ import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
 import { Route as PublicSignupRouteImport } from './routes/_public/signup'
 import { Route as PublicLoginRouteImport } from './routes/_public/login'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
+import { Route as AuthenticatedAddPatientRouteImport } from './routes/_authenticated/addPatient'
 
 const PublicRoute = PublicRouteImport.update({
   id: '/_public',
@@ -38,15 +39,22 @@ const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
   path: '/dashboard',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
+const AuthenticatedAddPatientRoute = AuthenticatedAddPatientRouteImport.update({
+  id: '/addPatient',
+  path: '/addPatient',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof PublicRouteWithChildren
+  '/addPatient': typeof AuthenticatedAddPatientRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/login': typeof PublicLoginRoute
   '/signup': typeof PublicSignupRoute
 }
 export interface FileRoutesByTo {
   '/': typeof PublicRouteWithChildren
+  '/addPatient': typeof AuthenticatedAddPatientRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/login': typeof PublicLoginRoute
   '/signup': typeof PublicSignupRoute
@@ -55,19 +63,21 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/_authenticated': typeof AuthenticatedRouteWithChildren
   '/_public': typeof PublicRouteWithChildren
+  '/_authenticated/addPatient': typeof AuthenticatedAddPatientRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
   '/_public/login': typeof PublicLoginRoute
   '/_public/signup': typeof PublicSignupRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/dashboard' | '/login' | '/signup'
+  fullPaths: '/' | '/addPatient' | '/dashboard' | '/login' | '/signup'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/dashboard' | '/login' | '/signup'
+  to: '/' | '/addPatient' | '/dashboard' | '/login' | '/signup'
   id:
     | '__root__'
     | '/_authenticated'
     | '/_public'
+    | '/_authenticated/addPatient'
     | '/_authenticated/dashboard'
     | '/_public/login'
     | '/_public/signup'
@@ -115,14 +125,23 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedDashboardRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
+    '/_authenticated/addPatient': {
+      id: '/_authenticated/addPatient'
+      path: '/addPatient'
+      fullPath: '/addPatient'
+      preLoaderRoute: typeof AuthenticatedAddPatientRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
   }
 }
 
 interface AuthenticatedRouteChildren {
+  AuthenticatedAddPatientRoute: typeof AuthenticatedAddPatientRoute
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
 }
 
 const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
+  AuthenticatedAddPatientRoute: AuthenticatedAddPatientRoute,
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
 }
 

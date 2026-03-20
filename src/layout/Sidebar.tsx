@@ -25,10 +25,6 @@ export default function Sidebar({ open, onClose }: Props) {
           md:translate-x-0
         `}
       >
-        <div className="p-4 font-semibold  text-white">
-          Menu
-        </div>
-
         <nav className="flex flex-col p-2 gap-1">
 
           <Link
@@ -37,6 +33,14 @@ export default function Sidebar({ open, onClose }: Props) {
           >
             Dashboard
           </Link>
+
+          <Link
+            to="/addPatient"
+            className="px-3 py-2 rounded hover:bg-(--color-accent) text-white"
+          >
+            Add Patient
+          </Link>
+
 
           <Link
             to="/login"
@@ -50,13 +54,6 @@ export default function Sidebar({ open, onClose }: Props) {
             className="px-3 py-2 rounded hover:bg-(--color-accent) text-white"
           >
             Settings
-          </Link>
-
-          <Link
-            to="/login"
-            className="px-3 py-2 rounded hover:bg-(--color-accent) text-white"
-          >
-            Logout
           </Link>
 
         </nav>
