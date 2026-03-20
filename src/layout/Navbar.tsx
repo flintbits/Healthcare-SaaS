@@ -43,18 +43,16 @@ export default function Navbar({ onMenuClick }: Props) {
 
 
       <div className="flex items-center gap-4">
-        {/* name */}
+
         <span className="text-sm">
           {username ?? user?.email}
         </span>
 
-        {/* avatar */}
         <div className="w-8 h-8 rounded-full bg-pink-700" />
 
-        {/* logout */}
         <button
           onClick={handleLogout}
-          className="p-2 rounded hover:bg-gray-200"
+          className="p-2 rounded hover:text-(--color-accent)"
         >
           <LogOut size={18} />
         </button>

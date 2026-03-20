@@ -9,7 +9,7 @@ export default function DashboardLayout() {
   const [open, setOpen] = useState(false)
 
   return (
-    <div className="h-screen flex flex-col">
+    <div className="h-screen flex flex-col ">
 
       <Navbar onMenuClick={() => setOpen(true)} />
 
@@ -20,7 +20,7 @@ export default function DashboardLayout() {
           onClose={() => setOpen(false)}
         />
 
-        <main className="flex-1 overflow-auto p-4 bg-gray-50">
+        <main className="flex-1 overflow-auto p-6 bg-gray-50">
           <Outlet />
         </main>
 

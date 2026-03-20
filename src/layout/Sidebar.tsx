@@ -43,7 +43,7 @@ export default function Sidebar({ open, onClose }: Props) {
 
 
           <Link
-            to="/login"
+            to="/patients"
             className="px-3 py-2 rounded hover:bg-(--color-accent) text-white"
           >
             Patients

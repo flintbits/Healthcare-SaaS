@@ -13,6 +13,7 @@ import { Route as PublicRouteImport } from './routes/_public'
 import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
 import { Route as PublicSignupRouteImport } from './routes/_public/signup'
 import { Route as PublicLoginRouteImport } from './routes/_public/login'
+import { Route as AuthenticatedPatientsRouteImport } from './routes/_authenticated/patients'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as AuthenticatedAddPatientRouteImport } from './routes/_authenticated/addPatient'
 
@@ -34,6 +35,11 @@ const PublicLoginRoute = PublicLoginRouteImport.update({
   path: '/login',
   getParentRoute: () => PublicRoute,
 } as any)
+const AuthenticatedPatientsRoute = AuthenticatedPatientsRouteImport.update({
+  id: '/patients',
+  path: '/patients',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
 const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
@@ -49,6 +55,7 @@ export interface FileRoutesByFullPath {
   '/': typeof PublicRouteWithChildren
   '/addPatient': typeof AuthenticatedAddPatientRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
+  '/patients': typeof AuthenticatedPatientsRoute
   '/login': typeof PublicLoginRoute
   '/signup': typeof PublicSignupRoute
 }
@@ -56,6 +63,7 @@ export interface FileRoutesByTo {
   '/': typeof PublicRouteWithChildren
   '/addPatient': typeof AuthenticatedAddPatientRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
+  '/patients': typeof AuthenticatedPatientsRoute
   '/login': typeof PublicLoginRoute
   '/signup': typeof PublicSignupRoute
 }
@@ -65,20 +73,28 @@ export interface FileRoutesById {
   '/_public': typeof PublicRouteWithChildren
   '/_authenticated/addPatient': typeof AuthenticatedAddPatientRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
+  '/_authenticated/patients': typeof AuthenticatedPatientsRoute
   '/_public/login': typeof PublicLoginRoute
   '/_public/signup': typeof PublicSignupRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/addPatient' | '/dashboard' | '/login' | '/signup'
+  fullPaths:
+    | '/'
+    | '/addPatient'
+    | '/dashboard'
+    | '/patients'
+    | '/login'
+    | '/signup'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/addPatient' | '/dashboard' | '/login' | '/signup'
+  to: '/' | '/addPatient' | '/dashboard' | '/patients' | '/login' | '/signup'
   id:
     | '__root__'
     | '/_authenticated'
     | '/_public'
     | '/_authenticated/addPatient'
     | '/_authenticated/dashboard'
+    | '/_authenticated/patients'
     | '/_public/login'
     | '/_public/signup'
   fileRoutesById: FileRoutesById
@@ -118,6 +134,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PublicLoginRouteImport
       parentRoute: typeof PublicRoute
     }
+    '/_authenticated/patients': {
+      id: '/_authenticated/patients'
+      path: '/patients'
+      fullPath: '/patients'
+      preLoaderRoute: typeof AuthenticatedPatientsRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
     '/_authenticated/dashboard': {
       id: '/_authenticated/dashboard'
       path: '/dashboard'
@@ -138,11 +161,13 @@ declare module '@tanstack/react-router' {
 interface AuthenticatedRouteChildren {
   AuthenticatedAddPatientRoute: typeof AuthenticatedAddPatientRoute
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
+  AuthenticatedPatientsRoute: typeof AuthenticatedPatientsRoute
 }
 
 const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
   AuthenticatedAddPatientRoute: AuthenticatedAddPatientRoute,
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
+  AuthenticatedPatientsRoute: AuthenticatedPatientsRoute,
 }
 
 const AuthenticatedRouteWithChildren = AuthenticatedRoute._addFileChildren(
