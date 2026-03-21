@@ -22,7 +22,7 @@ export default function FormComponent({
 }: FormProps) {
 
   return (
-    <section className="w-full max-w-md mx-auto flex flex-col">
+    <section className="w-full">
 
       <form
         onSubmit={handleSubmit}

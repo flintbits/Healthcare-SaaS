@@ -19,7 +19,7 @@ export default function Sidebar({ open, onClose }: Props) {
 
       <aside
         className={`
-          fixed md:static top-0 left-0 h-full w-48 bg-(--color-bg-secondary) border-r
+          fixed md:static top-0 left-0 h-full w-48 bg-(--color-bg-ternary) border-r
           transform transition-transform
           ${open ? "translate-x-0" : "-translate-x-full"}
           md:translate-x-0
@@ -50,10 +50,10 @@ export default function Sidebar({ open, onClose }: Props) {
           </Link>
 
           <Link
-            to="/login"
+            to="/analytics"
             className="px-3 py-2 rounded hover:bg-(--color-accent) text-white"
           >
-            Settings
+            Analytics
           </Link>
 
         </nav>

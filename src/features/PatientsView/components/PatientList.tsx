@@ -1,4 +1,6 @@
+import { Link } from "@tanstack/react-router";
 import type { Patient } from "../../../entities/Patient.entity";
+
 
 export const PatientsList: React.FC<{ patients: Patient[] }> = ({ patients }) => {
   return (
@@ -11,6 +13,7 @@ export const PatientsList: React.FC<{ patients: Patient[] }> = ({ patients }) =>
           <th className="p-3 w-1/5">Age</th>
           <th className="p-3 w-1/5">Status</th>
           <th className="p-3 w-1/5">Doctor</th>
+          <th className="p-3 w-1/5">View Details</th>
         </tr>
       </thead>
 
@@ -33,6 +36,15 @@ export const PatientsList: React.FC<{ patients: Patient[] }> = ({ patients }) =>
             </td>
 
             <td className="p-3">{p.doctor}</td>
+            <td className="p-3">
+              <Link
+                to="/patients/$patientId"
+                params={{ patientId: p.id as string }}
+                className="text-blue-600 underline"
+              >
+                reeee
+              </Link>
+            </td>
           </tr>
         ))}
       </tbody>

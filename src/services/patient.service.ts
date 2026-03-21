@@ -1,7 +1,9 @@
 import {
   addDoc,
   collection,
+  doc,
   DocumentReference,
+  getDoc,
   getDocs,
   Timestamp
 } from "firebase/firestore";
@@ -42,3 +44,21 @@ export const getAllPatients = async () => {
     return [];
   }
 };
+
+export const getPatientById = async (id: string) => {
+  try {
+    const docRef = doc(db, "patients", id);
+    const snapshot = await getDoc(docRef);
+
+    if (!snapshot.exists()) return null;
+
+    return {
+      id: snapshot.id,
+      ...snapshot.data(),
+    };
+  } catch (error) {
+    console.error("Error fetching patient:", error);
+    return null;
+  }
+};
+

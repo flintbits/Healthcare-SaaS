@@ -1,10 +1,11 @@
 import { useNavigate } from "@tanstack/react-router";
 import { useCallback } from "react";
 import useFormEngine from "../../app/hooks/useFormEngine";
-import { usePatients } from "../../app/hooks/usePatients";
+import type { Patient } from "../../entities/Patient.entity";
 import FormComponent from "../../features/Form/FormComponent";
 import type { FieldWithIconType } from "../../features/Form/FormComponent.types";
 import type { BaseField } from "../../shared/validation-engine/types/rules.type";
+import { usePatientStore } from "../../store/patient.store";
 import { PatientFormSchema } from "./schema/addPatient.schema";
 
 
@@ -13,17 +14,9 @@ const schema = PatientFormSchema
 export default function AddPatientForm() {
   const { formData, onChange, errors, checkAllFields } = useFormEngine<BaseField>(schema as BaseField[]);
   console.log(errors)
-  const { createPatient } = usePatients();
+  const { createPatient } = usePatientStore();
 
   const navigate = useNavigate();
-
-  // const submitAuth = useCallback(async () => {
-  //   if (!isLogin) {
-  //     await handleSignup(formData.email, formData.password)
-  //   } else {
-  //     await handleLogin(formData.email, formData.password)
-  //   }
-  // }, [isLogin, formData, handleSignup, handleLogin])
 
 
   const handleSubmit = useCallback(async (e: React.SubmitEvent<HTMLFormElement>) => {
@@ -33,7 +26,8 @@ export default function AddPatientForm() {
     if (Object.values(errors).some(Boolean)) return
 
     try {
-      await createPatient(formData)
+      await createPatient(formData as Patient)
+      navigate({ to: "/patients", replace: true, })
     } catch (err) {
       console.error(err)
     }
@@ -42,7 +36,9 @@ export default function AddPatientForm() {
   )
 
   return (
-    <section className="w-full max-w-md mx-auto flex flex-col">
+    <section className="w-full">
+      <h1 className="text-2xl font-semibold">Fill Patient Info</h1>
+
 
       <FormComponent
         schema={PatientFormSchema as FieldWithIconType[]}

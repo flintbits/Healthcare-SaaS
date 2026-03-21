@@ -1,33 +1,40 @@
-import { addDoc, collection, getDocs, Timestamp } from "firebase/firestore";
 import { create } from "zustand";
 import type { Patient } from "../entities/Patient.entity";
-import { db } from "../firebase/firestore";
-
+import { addPatient, getAllPatients, getPatientById } from "../services/patient.service";
 
 type PatientStore = {
   patients: Patient[];
+  selectedPatient: Patient | null;
   loading: boolean;
 
   fetchPatients: () => Promise<void>;
+  fetchPatientById: (id: string) => Promise<void>;
   createPatient: (data: Patient) => Promise<void>;
 };
 
 export const usePatientStore = create<PatientStore>((set) => ({
   patients: [],
+  selectedPatient: null,
   loading: false,
 
   fetchPatients: async () => {
     set({ loading: true });
 
-    const snapshot = await getDocs(collection(db, "patients"));
-
-    const list = snapshot.docs.map((doc) => ({
-      id: doc.id,
-      ...doc.data(),
-    })) as Patient[];
+    const list = await getAllPatients();
 
     set({
-      patients: list,
+      patients: list as Patient[],
+      loading: false,
+    });
+  },
+
+  fetchPatientById: async (id) => {
+    set({ loading: true });
+
+    const patient = await getPatientById(id);
+
+    set({
+      selectedPatient: patient as Patient | null,
       loading: false,
     });
   },
@@ -35,20 +42,12 @@ export const usePatientStore = create<PatientStore>((set) => ({
   createPatient: async (data) => {
     set({ loading: true });
 
-    await addDoc(collection(db, "patients"), {
-      ...data,
-      createdAt: Timestamp.now(),
-    });
+    await addPatient(data);
 
-    const snapshot = await getDocs(collection(db, "patients"));
-
-    const list = snapshot.docs.map((doc) => ({
-      id: doc.id,
-      ...doc.data(),
-    })) as Patient[];
+    const list = await getAllPatients();
 
     set({
-      patients: list,
+      patients: list as Patient[],
       loading: false,
     });
   },

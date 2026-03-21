@@ -1,7 +1,9 @@
 import { createRouter, RouterProvider } from '@tanstack/react-router';
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
+import './app/chart';
 import { AuthProvider, useAuth } from './app/Providers/AuthContext';
+import { GlobalLoader } from './features/GlobalLoader/GlobalLoader';
 import './index.css';
 import { routeTree } from './routeTree.gen';
 
@@ -40,6 +42,7 @@ if (!rootElement.innerHTML) {
   root.render(
     <StrictMode>
       <AuthProvider >
+        <GlobalLoader />
         <InnerApp />
       </AuthProvider>
     </StrictMode>,

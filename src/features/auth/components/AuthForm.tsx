@@ -15,10 +15,9 @@ type FormProps = {
 
 export default function AuthForm({ schema, formType, }: FormProps) {
   const { formData, onChange, errors, checkAllFields } = useFormEngine<BaseField>(schema as BaseField[]);
-
   const navigate = useNavigate();
-  const isLogin = formType === "login";
 
+  const isLogin = formType === "login";
 
   const submitAuth = useCallback(async () => {
     if (!isLogin) {
