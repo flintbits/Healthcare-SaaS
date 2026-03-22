@@ -3,7 +3,7 @@ import { PatientsList } from "./PatientList";
 import { PatientsGrid } from "./PatientsGrid";
 import { ViewToggle } from "./ViewToggle";
 
-export const PatientsView: React.FC<{ view: string, setView: (view: string) => void, search: string, setSearch: (search: string) => void, patients: Patient[] }> = ({ view, setView, search, setSearch, patients }) => {
+export const PatientsView: React.FC<{ view: string, setView: (view: string) => void, patients: Patient[] }> = ({ view, setView, patients }) => {
   return (
     <div className="space-y-4">
 

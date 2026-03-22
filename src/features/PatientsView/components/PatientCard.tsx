@@ -1,7 +1,11 @@
 import { Activity, Stethoscope, User } from "lucide-react";
 import type { Patient } from "../../../entities/Patient.entity";
 
-export const PatientCard: React.FC<{ patients: Patient }> = ({ patient }) => {
+interface PatientCardProps {
+  patient: Patient;
+}
+
+export const PatientCard = ({ patient }: PatientCardProps) => {
   return (
     <div className="bg-(--color-text-secondary)/10 rounded-xl p-4 shadow-sm hover:shadow-md transition">
 
@@ -12,7 +16,7 @@ export const PatientCard: React.FC<{ patients: Patient }> = ({ patient }) => {
           {patient.name}
         </div>
 
-        <span
+        {/* <span
           className={`text-xs px-2 py-1 rounded-full
             ${patient.status === "active"
               ? "bg-green-100 text-green-700"
@@ -21,7 +25,7 @@ export const PatientCard: React.FC<{ patients: Patient }> = ({ patient }) => {
           `}
         >
           {patient.status}
-        </span>
+        </span> */}
 
       </div>
 

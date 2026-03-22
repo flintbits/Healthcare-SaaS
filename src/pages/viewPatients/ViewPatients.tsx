@@ -6,6 +6,8 @@ export default function ViewPatients() {
   const [view, setView] = useState("list");
   const [search, setSearch] = useState("");
 
+  console.log(search)
+
   const { patients, fetchPatients, loading } = usePatientStore();
 
   useEffect(() => {
@@ -18,8 +20,6 @@ export default function ViewPatients() {
       <PatientsView
         view={view}
         setView={setView}
-        search={search}
-        setSearch={setSearch}
         patients={patients}
       />
 
