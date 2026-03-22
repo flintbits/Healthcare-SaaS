@@ -66,7 +66,7 @@ export default function Navbar({ onMenuClick }: Props) {
               </button>
               {/* Notification Dropdown */}
               {open && (
-                <div className="absolute right-0 mt-2 bg-white text-black shadow rounded z-50">
+                <div className="absolute right-0 mt-2 border border-(--color-bg-secondary) bg-white text-black rounded z-50">
                   <NotificationDropdown />
                 </div>
               )}

@@ -1,11 +1,27 @@
 // components/layout/Sidebar.tsx
 
-import { Link } from "@tanstack/react-router"
+import { Link } from "@tanstack/react-router";
 
 type Props = {
   open: boolean
   onClose: () => void
 }
+
+const navLinks = [
+  {
+    label: "Analytics",
+    to: "/analytics",
+  },
+  {
+    label: "Add Patient",
+    to: "/addPatient",
+  },
+  {
+    label: "Patients",
+    to: "/patients",
+  },
+
+];
 
 export default function Sidebar({ open, onClose }: Props) {
   return (
@@ -19,42 +35,22 @@ export default function Sidebar({ open, onClose }: Props) {
 
       <aside
         className={`
-          fixed md:static top-0 left-0 h-full w-48 bg-(--color-bg-ternary) border-r
+          fixed md:static top-0 left-0 h-full w-48 bg-(--color-bg-ternary)
           transform transition-transform
           ${open ? "translate-x-0" : "-translate-x-full"}
           md:translate-x-0
         `}
       >
         <nav className="flex flex-col p-2 gap-1">
-
-          <Link
-            to="/dashboard"
-            className="px-3 py-2 rounded hover:bg-(--color-accent) text-white"
-          >
-            Dashboard
-          </Link>
-
-          <Link
-            to="/addPatient"
-            className="px-3 py-2 rounded hover:bg-(--color-accent) text-white"
-          >
-            Add Patient
-          </Link>
-
-
-          <Link
-            to="/patients"
-            className="px-3 py-2 rounded hover:bg-(--color-accent) text-white"
-          >
-            Patients
-          </Link>
-
-          <Link
-            to="/analytics"
-            className="px-3 py-2 rounded hover:bg-(--color-accent) text-white"
-          >
-            Analytics
-          </Link>
+          {navLinks.map((link) => (
+            <Link
+              key={link.to}
+              to={link.to}
+              className="px-3 py-2 rounded hover:bg-(--color-accent) text-white"
+            >
+              {link.label}
+            </Link>
+          ))}
 
         </nav>
       </aside>

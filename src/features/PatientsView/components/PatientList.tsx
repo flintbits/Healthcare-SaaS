@@ -1,4 +1,5 @@
 import { Link } from "@tanstack/react-router";
+import { FileSymlink } from "lucide-react";
 import type { Patient } from "../../../entities/Patient.entity";
 
 
@@ -40,9 +41,9 @@ export const PatientsList: React.FC<{ patients: Patient[] }> = ({ patients }) =>
               <Link
                 to="/patients/$patientId"
                 params={{ patientId: p.id as string }}
-                className="text-blue-600 underline"
+                className="text-(--color-accent) underline"
               >
-                reeee
+                <FileSymlink />
               </Link>
             </td>
           </tr>

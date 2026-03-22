@@ -1,3 +1,4 @@
+import { useNavigate } from "@tanstack/react-router";
 import { Activity, Stethoscope, User } from "lucide-react";
 import type { Patient } from "../../../entities/Patient.entity";
 
@@ -6,8 +7,12 @@ interface PatientCardProps {
 }
 
 export const PatientCard = ({ patient }: PatientCardProps) => {
+  const navigate = useNavigate()
+  const handlePatientView = () => {
+    navigate({ to: "/patients/$patientId", replace: true, params: { patientId: patient.id as string } })
+  }
   return (
-    <div className="bg-(--color-text-secondary)/10 rounded-xl p-4 shadow-sm hover:shadow-md transition">
+    <div className="bg-(--color-text-secondary)/10 rounded-xl p-4 shadow-sm hover:shadow-md transition cursor-pointer" onClick={handlePatientView}>
 
       <div className="flex items-center justify-between">
 

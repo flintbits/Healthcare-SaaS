@@ -1,13 +1,13 @@
-import { useEffect, useState } from "react";
-import PatientsChart from "../../features/charts/PatientsChart";
-import RevenueChart from "../../features/charts/RevenueChart";
-import VisitsChart from "../../features/charts/VisitsChart";
+import { lazy, Suspense, useEffect, useState } from "react";
 import { getMonthlyRevenue, getMonthlyVisits, getPatientStatusStats } from "../../services/analytics.service";
 import { showNotification } from "../../services/notification.service";
 import { Button } from "../../shared/ui/Button/Button";
 import { useNotificationStore } from "../../store/notification.store";
 import { usePatientStore } from "../../store/patient.store";
 import { useVisitStore } from "../../store/visit.store";
+const PatientsChart = lazy(() => import("../../features/charts/PatientsChart"));
+const RevenueChart = lazy(() => import("../../features/charts/RevenueChart"));
+const VisitsChart = lazy(() => import("../../features/charts/VisitsChart"));
 
 
 type ChartStats = {
@@ -63,21 +63,27 @@ export default function AnalyticsPage() {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
 
         <div className="p-3 rounded h-64">
-          {patientStats && (
-            <PatientsChart data={patientStats} />
-          )}
+          <Suspense fallback={<div>Loading chart...</div>}>
+            {patientStats && (
+              <PatientsChart data={patientStats} />
+            )}
+          </Suspense>
         </div>
 
         <div className="p-3 rounded h-64">
-          {visitStats && (
-            <VisitsChart key={visitStats.labels.join("-")} data={visitStats} />
-          )}
+          <Suspense fallback={<div>Loading chart...</div>}>
+            {visitStats && (
+              <VisitsChart key={visitStats.labels.join("-")} data={visitStats} />
+            )}
+          </Suspense>
         </div>
 
         <div className=" p-3 rounded h-64">
-          {revenueStats && (
-            <RevenueChart data={revenueStats} />
-          )}
+          <Suspense fallback={<div>Loading chart...</div>}>
+            {revenueStats && (
+              <RevenueChart data={revenueStats} />
+            )}
+          </Suspense>
         </div>
 
       </div>

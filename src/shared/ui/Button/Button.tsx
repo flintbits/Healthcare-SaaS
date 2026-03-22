@@ -11,7 +11,7 @@ export const Button: React.FC<ButtonProps> = ({
     ...props
 }) => {
     const base =
-        "px-4 py-2 rounded-lg font-medium transition-colors duration-200 border";
+        "px-4 py-2 rounded-lg font-medium transition-colors duration-200 border cursor-pointer";
 
     const variants: Record<typeof variant, string> = {
         accent:

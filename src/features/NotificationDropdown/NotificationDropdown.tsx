@@ -15,16 +15,17 @@ export default function NotificationDropdown() {
 
   return (
     <div className="w-72 max-h-80 overflow-auto">
-      {notifications.map((n) => (
+      {notifications.map((n, i) => (
         <div
           key={n.id}
           onClick={() => markRead(n.id)}
-          className={`p-2 border-b cursor-pointer ${n.read ? "opacity-60" : ""
+          className={`p-2 ${i !== notifications.length - 1 ? "border-b border-(--color-accent)/40" : ""} cursor-pointer ${n.read ? "opacity-60" : ""
             }`}
         >
           {n.title}
         </div>
-      ))}
-    </div>
+      ))
+      }
+    </div >
   );
 }

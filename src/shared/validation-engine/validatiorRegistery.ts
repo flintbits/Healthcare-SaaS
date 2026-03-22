@@ -1,4 +1,4 @@
-import type { MaxLengthConstraints, MinLengthConstraints, ValidatorFactory } from "./types/rules.type"
+import type { EmailConstraints, MaxLengthConstraints, MinLengthConstraints, ValidatorFactory } from "./types/rules.type"
 
 
 
@@ -23,6 +23,22 @@ export const validatorRegistery: Record<string, ValidatorFactory> = {
       if (value.trim().length > constraints.maxLength) {
         return `Must be less than ${constraints.maxLength} characters`
       }
+      return null
+    }
+  },
+
+  email: (constraints: EmailConstraints) => {
+    return (value: string) => {
+      if (!value) return null
+      const regex =
+        typeof constraints.pattern === "string"
+          ? new RegExp(constraints.pattern)
+          : constraints.pattern
+
+      if (!regex.test(value.trim())) {
+        return "Invalid email"
+      }
+
       return null
     }
   }

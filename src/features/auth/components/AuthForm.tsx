@@ -72,7 +72,7 @@ export default function AuthForm({ schema, formType, }: FormProps) {
           size="text-base"
           className="mt-3"
         >
-          Dont have an Account?
+          Dont have an Account?{" "}
           <Link
             to="/signup"
             className="text-(--color-accent) no-underline"
@@ -96,6 +96,20 @@ export default function AuthForm({ schema, formType, }: FormProps) {
           </Link>
         </Typography>
       )}
+
+      <Typography
+        as="p"
+        weight="light"
+        size="text-base"
+        className="mt-3"
+      >
+        <Link
+          to="/"
+          className="text-(--color-accent) no-underline"
+        >
+          Go to Home?
+        </Link>
+      </Typography>
 
     </section>
   );

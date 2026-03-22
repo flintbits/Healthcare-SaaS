@@ -37,6 +37,7 @@ export default function PatientDetailsPage({ patientId }: PatientDetailsPageProp
     const visitdata = { patientId, ...formData }
     try {
       await createVisit(visitdata as Visit)
+      setOpenModal(false)
     } catch (err) {
       console.error(err)
     }

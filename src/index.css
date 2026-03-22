@@ -47,25 +47,13 @@ p {
 }
 
 :root[data-theme="white"] {
-  --theme-bg: #f5f5f5;
-  --theme-bg-secondary: #172726;
-  --theme-bg-ternary: #2b3a39;
+  --theme-bg: white;
+  --theme-bg-secondary: #62a0c9;
+  --theme-bg-ternary: #62a0c9;
 
-  --theme-text-primary: #172726;
-  --theme-text-secondary: #243f3d;
-  --theme-text-muted: #476664;
+  --theme-text-primary: #62a0c9;
+  --theme-text-secondary: #62a0c9;
+  --theme-text-muted: #62a0c9;
 
   --theme-accent: #f95831;
-}
-
-:root[data-theme="dark"] {
-  --theme-bg: #1c1c1c;
-  --theme-bg-secondary: #111111;
-  --theme-border: #262626;
-
-  --theme-text-primary: #f2f2f2;
-  --theme-text-secondary: #bfbfbf;
-  --theme-text-muted: #8c8c8c;
-
-  --theme-accent: #ffffff;
 }

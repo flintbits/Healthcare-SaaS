@@ -11,7 +11,8 @@ export const LoginFormSchema: (AuthFieldType & { leftIcon?: LucideIcon, rightIco
     placeholder: "Enter your email",
     leftIcon: Mail,
     fieldValidators: [
-      { type: "required" }
+      { type: "required" },
+      { type: "email", constraints: { pattern: /^[^\s@]+@[^\s@]+\.[^\s@]+$/ } }
     ]
   },
   {
@@ -59,16 +60,6 @@ export const SignupFormSchema: (AuthFieldType & { leftIcon?: LucideIcon })[] = [
     fieldValidators: [
       { type: "required" },
       { type: "minLength", constraints: { minLength: 8 } }
-    ]
-  },
-  {
-    id: "cnfpassword",
-    label: "Confirm Password",
-    type: "password",
-    placeholder: "Confirm your password",
-    leftIcon: Key,
-    fieldValidators: [
-      { type: "required" },
     ]
   }
 ]
