@@ -6,6 +6,7 @@ import { AuthProvider, useAuth } from './app/Providers/AuthContext';
 import { GlobalLoader } from './features/GlobalLoader/GlobalLoader';
 import './index.css';
 import { routeTree } from './routeTree.gen';
+import { registerSW } from './service-worker/registerSW';
 
 const router = createRouter({
   routeTree,
@@ -13,6 +14,8 @@ const router = createRouter({
     auth: undefined!
   }
 })
+
+registerSW()
 
 declare module '@tanstack/react-router' {
   interface Register {

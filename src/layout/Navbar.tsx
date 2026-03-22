@@ -1,8 +1,11 @@
 import { Link, useNavigate } from "@tanstack/react-router";
-import { LogOut, Menu } from "lucide-react";
+import { Bell, LogOut, Menu } from "lucide-react";
+import { useState } from "react";
 import { useAuth } from "../app/Providers/AuthContext";
+import NotificationDropdown from "../features/NotificationDropdown/NotificationDropdown";
 import { Button } from "../shared/ui/Button/Button";
 import { useAuthStore } from "../store/auth.store";
+import { useNotificationStore } from "../store/notification.store";
 
 
 type Props = {
@@ -10,15 +13,15 @@ type Props = {
 }
 
 export default function Navbar({ onMenuClick }: Props) {
-
+  const [open, setOpen] = useState(false);
   const navigate = useNavigate();
 
   const { user, logout } = useAuth();
 
   const username = useAuthStore((s) => s.user?.name);
+  const notifications = useNotificationStore((s) => s.notifications);
 
-
-  console.log(username)
+  const unreadNotis = notifications.filter((n) => !n.read).length;
 
   const handleLogout = async () => {
     await logout();
@@ -39,7 +42,6 @@ export default function Navbar({ onMenuClick }: Props) {
         >
           <Menu size={20} />
         </button>
-
         <span className="font-semibold">
           Healthcare SaaS
         </span>
@@ -47,9 +49,29 @@ export default function Navbar({ onMenuClick }: Props) {
 
 
       <div className="flex items-center gap-4">
-
         {user?.email ?
           <>
+            {/* Notification */}
+            <div className="relative">
+              <button
+                onClick={() => setOpen((p) => !p)}
+                className="relative flex gap-2 p-2 rounded hover:text-(--color-accent)"
+              >
+                <Bell />
+                {unreadNotis > 0 && (
+                  <span className="absolute -top-1 -right-1 text-xs px-1 rounded">
+                    {unreadNotis}
+                  </span>
+                )}
+              </button>
+              {/* Notification Dropdown */}
+              {open && (
+                <div className="absolute right-0 mt-2 bg-white text-black shadow rounded z-50">
+                  <NotificationDropdown />
+                </div>
+              )}
+            </div>
+
             <span className="text-sm">
               {username ?? user?.email}
             </span>
@@ -74,9 +96,7 @@ export default function Navbar({ onMenuClick }: Props) {
             </Link>
           </>
         }
-
       </div>
-
     </header>
   )
 }

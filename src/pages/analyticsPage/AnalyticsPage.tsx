@@ -3,6 +3,9 @@ import PatientsChart from "../../features/charts/PatientsChart";
 import RevenueChart from "../../features/charts/RevenueChart";
 import VisitsChart from "../../features/charts/VisitsChart";
 import { getMonthlyRevenue, getMonthlyVisits, getPatientStatusStats } from "../../services/analytics.service";
+import { showNotification } from "../../services/notification.service";
+import { Button } from "../../shared/ui/Button/Button";
+import { useNotificationStore } from "../../store/notification.store";
 import { usePatientStore } from "../../store/patient.store";
 import { useVisitStore } from "../../store/visit.store";
 
@@ -16,6 +19,7 @@ type ChartStats = {
 export default function AnalyticsPage() {
   const { patients, fetchPatients } = usePatientStore();
   const { visits, fetchVisits } = useVisitStore();
+  const add = useNotificationStore((s) => s.add);
 
   const [patientStats, setPatientStats] = useState<ChartStats | null>(null);
   const [visitStats, setVisitStats] = useState<ChartStats | null>(null);
@@ -36,6 +40,18 @@ export default function AnalyticsPage() {
     setVisitStats(getMonthlyVisits(visits));
     setRevenueStats(getMonthlyRevenue(visits));
   }, [visits]);
+
+  const generateReport = () => {
+    setTimeout(() => {
+      showNotification("ReportReady", "Monthly analytics generated");
+
+      add({
+        id: String(Math.random()),
+        title: "Report Ready",
+        read: false,
+      })
+    }, 3000)
+  }
 
   return (
     <div className="p-6 space-y-6">
@@ -65,6 +81,8 @@ export default function AnalyticsPage() {
         </div>
 
       </div>
+
+      <Button onClick={generateReport}>Generate Analytics Report</Button>
 
     </div>
   );
