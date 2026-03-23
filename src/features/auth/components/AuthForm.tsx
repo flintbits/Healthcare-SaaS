@@ -49,8 +49,7 @@ export default function AuthForm({ schema, formType, }: FormProps) {
   )
 
   return (
-    <section className="w-full max-w-md mx-auto flex flex-col">
-
+    <section className="w-full max-w-md mx-auto px-4 sm:px-6 md:px-0 flex flex-col">
       <Typography as="h1" weight="bold">
         {isLogin
           ? "Access Your Account"

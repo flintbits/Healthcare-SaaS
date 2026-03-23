@@ -36,13 +36,13 @@ export default function Navbar({ onMenuClick }: Props) {
     <header className="w-full h-14 flex items-center justify-between px-4 bg-(--color-bg-ternary) text-white ">
 
       <div className="flex items-center gap-2">
-        <button
+        {user?.email && <button
           onClick={onMenuClick}
           className="md:hidden p-2 rounded hover:bg-gray-100"
         >
           <Menu size={20} />
-        </button>
-        <span className="font-semibold">
+        </button>}
+        <span className="hidden sm:inline font-semibold">
           Healthcare SaaS
         </span>
       </div>
