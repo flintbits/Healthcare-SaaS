@@ -1,5 +1,4 @@
 import type { LucideIcon } from "lucide-react"
-import type { ValidatorFnType } from "../../shared/validation-engine/types/rules.type"
 
 export type FieldType = {
   id: string,
@@ -8,11 +7,10 @@ export type FieldType = {
   options?: any[]
   placeholder: string
   isPassword?: Boolean | undefined
-  fieldValidators: FieldValidatorType[]
+  fieldValidators: import("../../shared/validation-engine/types/rules.type").FieldValidatorType[]
 }
 
-//Used for attaching validator functions
-export type FieldValidatorType = Omit<FieldType, "fieldValidators"> & { fieldValidators?: ValidatorFnType[] }
+export type CompiledField = Omit<FieldType, "fieldValidators"> & { fieldValidators?: import("../../shared/validation-engine/types/rules.type").ValidatorFnType[] }
 
 
 export type FieldWithIconType = FieldType & { leftIcon?: LucideIcon; rightIcon?: LucideIcon; }

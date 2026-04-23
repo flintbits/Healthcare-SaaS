@@ -1,11 +1,13 @@
 import {
   addDoc,
   collection,
+  deleteDoc,
   doc,
   DocumentReference,
   getDoc,
   getDocs,
-  Timestamp
+  Timestamp,
+  updateDoc
 } from "firebase/firestore";
 import type { Patient } from "../entities/Patient.entity";
 import { db } from "../firebase/firestore";
@@ -59,6 +61,29 @@ export const getPatientById = async (id: string) => {
   } catch (error) {
     console.error("Error fetching patient:", error);
     return null;
+  }
+};
+
+export const updatePatient = async (id: string, data: Partial<Patient>) => {
+  try {
+    const docRef = doc(db, "patients", id);
+    await updateDoc(docRef, {
+      ...data,
+      updatedAt: Timestamp.now(),
+    });
+  } catch (error) {
+    console.error("Error updating patient:", error);
+    throw error;
+  }
+};
+
+export const deletePatient = async (id: string) => {
+  try {
+    const docRef = doc(db, "patients", id);
+    await deleteDoc(docRef);
+  } catch (error) {
+    console.error("Error deleting patient:", error);
+    throw error;
   }
 };
 

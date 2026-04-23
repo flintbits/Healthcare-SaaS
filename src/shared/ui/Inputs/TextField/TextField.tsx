@@ -3,7 +3,6 @@ import type { LucideIcon } from "lucide-react";
 import React, { forwardRef } from "react";
 import Typography from "../../Typography/Typography";
 
-
 interface TextFieldProps
     extends React.InputHTMLAttributes<HTMLInputElement> {
     label?: string;
@@ -34,15 +33,15 @@ export const TextField = forwardRef<HTMLInputElement, TextFieldProps>(
     ) => {
         return (
             <section
-                className="flex flex-col gap-1 w-full"
+                className="flex w-full flex-col gap-2"
                 style={style}
             >
-
+                {/* label row */}
                 {label && (
-                    <div className="flex justify-between items-baseline">
+                    <div className="flex items-center justify-between gap-3">
                         <label
                             htmlFor={id}
-                            className="text-sm font-light text-gray-500"
+                            className="text-sm font-medium tracking-[-0.01em] text-white/65"
                         >
                             {label}
                         </label>
@@ -51,7 +50,7 @@ export const TextField = forwardRef<HTMLInputElement, TextFieldProps>(
                             <Typography as="p" weight="light" size="text-xs">
                                 <Link
                                     to="/"
-                                    className="text-(--color-accent) no-underline"
+                                    className="no-underline text-white/45 transition hover:text-white"
                                 >
                                     Forgot Password?
                                 </Link>
@@ -60,55 +59,51 @@ export const TextField = forwardRef<HTMLInputElement, TextFieldProps>(
                     </div>
                 )}
 
-                {/* Input container */}
+                {/* input shell */}
                 <div
                     className={[
-                        "rounded-md",
+                        "group relative overflow-hidden rounded-2xl border backdrop-blur-2xl transition-all duration-300",
                         error
-                            ? "focus-within:ring-red-600/20"
-                            : "",
+                            ? "border-red-400/50 bg-red-500/[0.04] focus-within:border-red-400"
+                            : "border-white/10 bg-white/[0.04] hover:bg-white/[0.06] focus-within:border-white/20 focus-within:bg-white/[0.07]",
+                        className,
                     ]
                         .filter(Boolean)
                         .join(" ")}
                 >
-                    <div
-                        className={[
-                            "flex items-center rounded-md border bg-white px-3 focus-within:bg-(--color-accent)/10",
-                            error ? "border-red-600" : "border-gray-400",
-                            className,
-                        ]
-                            .filter(Boolean)
-                            .join(" ")}
-                    >
+                    {/* subtle inner glow */}
+                    <div className="pointer-events-none absolute inset-0 rounded-2xl shadow-[inset_0_1px_0_rgba(255,255,255,0.05)]" />
+
+                    <div className="relative flex h-14 items-center px-4">
                         {LeftIcon && (
-                            <LeftIcon className="w-4 h-4 mr-2 text-gray-400" />
+                            <LeftIcon className="mr-3 h-4 w-4 shrink-0 text-white/35 transition group-focus-within:text-white/70" />
                         )}
 
                         <input
                             ref={ref}
                             id={id}
-                            className="flex-1 border-none outline-none py-2 bg-transparent text-sm font-light"
+                            className="flex-1 bg-transparent text-sm font-normal text-white placeholder:text-white/30 outline-none"
                             {...props}
                         />
 
                         {RightIcon && (
-                            <RightIcon className="w-4 h-4 ml-2 text-gray-400" />
+                            <RightIcon className="ml-3 h-4 w-4 shrink-0 text-white/35 transition group-focus-within:text-white/70" />
                         )}
                     </div>
                 </div>
 
-                {/* error text */}
+                {/* helper / error */}
                 <Typography
                     as="p"
                     weight="light"
                     size="text-xs"
-                    className={error ? "text-red-600" : ""}
-                    style={{
-                        visibility: error ? "visible" : "hidden",
-                        minHeight: helperText ? 14 : 0
-                    }}
+                    className={
+                        error
+                            ? "min-h-[16px] text-red-300"
+                            : "min-h-[16px] text-white/35"
+                    }
                 >
-                    {helperText}
+                    {helperText || " "}
                 </Typography>
             </section>
         );

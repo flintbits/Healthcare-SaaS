@@ -3,7 +3,6 @@ import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import './app/chart';
 import { AuthProvider, useAuth } from './app/Providers/AuthContext';
-import { GlobalLoader } from './features/GlobalLoader/GlobalLoader';
 import './index.css';
 import { routeTree } from './routeTree.gen';
 import { registerSW } from './service-worker/registerSW';
@@ -51,8 +50,7 @@ if (!rootElement.innerHTML) {
   const root = createRoot(rootElement)
   root.render(
     <StrictMode>
-      <AuthProvider >
-        <GlobalLoader />
+      <AuthProvider>
         <InnerApp />
       </AuthProvider>
     </StrictMode>,

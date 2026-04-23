@@ -1,28 +1,24 @@
-
 import type { ChartOptions } from "chart.js";
-import { Line } from "react-chartjs-2";
+import { Bar } from "react-chartjs-2";
 
-export default function VisitsChart({ data }: { data: { labels: string[]; values: number[] } }) {
+export default function AppointmentsChart({ data }: { data: { labels: string[]; values: number[] } }) {
   const chartData = {
     labels: data.labels,
     datasets: [
       {
-        label: "Monthly Visits",
+        label: "Monthly Appointments",
         data: data.values,
-        borderColor: "#3b82f6",
-        backgroundColor: "rgba(59,130,246,0.12)",
-        tension: 0.4,
-        fill: true,
-        pointRadius: 4,
-        pointBackgroundColor: "#3b82f6",
-        pointBorderColor: "rgba(10,12,18,0.95)",
-        pointBorderWidth: 2,
-        hoverRadius: 6,
+        backgroundColor: "rgba(34,197,94,0.8)",
+        borderColor: "#22c55e",
+        borderWidth: 1,
+        borderRadius: 4,
+        borderSkipped: false,
+        hoverBackgroundColor: "rgba(34,197,94,0.9)",
       },
     ],
   };
 
-  const options: ChartOptions<"line"> = {
+  const options: ChartOptions<"bar"> = {
     responsive: true,
     maintainAspectRatio: false,
     animation: {
@@ -48,6 +44,7 @@ export default function VisitsChart({ data }: { data: { labels: string[]; values
         borderColor: "rgba(255,255,255,0.08)",
         borderWidth: 1,
         padding: 12,
+        cornerRadius: 8,
         displayColors: false,
       },
     },
@@ -56,43 +53,41 @@ export default function VisitsChart({ data }: { data: { labels: string[]; values
         grid: {
           display: false,
         },
-        border: {
-          display: false,
-        },
         ticks: {
-          color: "rgba(255,255,255,0.38)",
+          color: "rgba(255,255,255,0.6)",
           font: {
-            size: 11,
-            weight: "bold",
+            size: 12,
           },
+        },
+        border: {
+          color: "rgba(255,255,255,0.08)",
         },
       },
       y: {
         beginAtZero: true,
         grid: {
-          color: "rgba(255,255,255,0.05)",
-        },
-        border: {
-          display: false,
+          color: "rgba(255,255,255,0.04)",
         },
         ticks: {
-          color: "rgba(255,255,255,0.32)",
+          color: "rgba(255,255,255,0.6)",
           font: {
-            size: 10,
+            size: 12,
           },
-          padding: 8,
+          callback: function (value) {
+            return value as number;
+          },
         },
+        border: {
+          color: "rgba(255,255,255,0.08)",
+        },
+      },
+    },
+    elements: {
+      bar: {
+        borderRadius: 4,
       },
     },
   };
 
-  return (
-    <div className="h-64">
-      <Line
-        key={data.labels.join("-")}
-        data={chartData}
-        options={options}
-      />
-    </div>
-  );
+  return <Bar data={chartData} options={options} />;
 }

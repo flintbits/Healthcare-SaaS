@@ -36,19 +36,34 @@ export default function AddPatientForm() {
   )
 
   return (
-    <section className="w-full">
-      <h1 className="text-2xl font-semibold">Fill Patient Info</h1>
+    <div className="space-y-6">
+      {/* header */}
+      <section className="flex flex-col gap-5 xl:flex-row xl:items-end xl:justify-between">
+        <div>
+          <p className="text-[10px] uppercase tracking-[0.30em] text-white/35">
+            Patient Registration
+          </p>
 
+          <h1 className="mt-3 text-4xl font-semibold tracking-[-0.04em] text-white">
+            Add New Patient
+          </h1>
 
-      <FormComponent
-        schema={PatientFormSchema as FieldWithIconType[]}
-        formData={formData}
-        handleSubmit={handleSubmit}
-        onChange={onChange}
-        errors={errors}
-      />
+          <p className="mt-3 max-w-2xl text-sm leading-7 text-white/55">
+            Register a new patient with complete medical information and care details.
+          </p>
+        </div>
+      </section>
 
-
-    </section>
+      <section className="w-full">
+        <FormComponent
+          schema={PatientFormSchema as FieldWithIconType[]}
+          formData={formData}
+          twoColumn={true}
+          handleSubmit={handleSubmit}
+          onChange={onChange}
+          errors={errors}
+        />
+      </section>
+    </div>
   );
 }
