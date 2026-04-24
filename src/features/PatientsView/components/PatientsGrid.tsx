@@ -5,7 +5,7 @@ export const PatientsGrid: React.FC<{
   patients: Patient[];
 }> = ({ patients }) => {
   return (
-    <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
+    <div className="grid gap-5 items-stretch sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
       {patients.map((p) => (
         <PatientCard
           key={p.id}
