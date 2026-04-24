@@ -148,7 +148,7 @@ export default function Navbar({
                   }
                   className="relative rounded-full border border-white/10 bg-white/[0.03] p-2 text-white/70 transition hover:bg-white/[0.08] hover:text-white"
                 >
-                  <Bell size={15} />
+                  <Bell size={15} className="text-sky-400" />
 
                   {unreadNotis >
                     0 && (
@@ -183,7 +183,7 @@ export default function Navbar({
 
                 <ChevronDown
                   size={13}
-                  className="text-white/35"
+                  className="text-white/60"
                 />
               </div>
 
@@ -194,7 +194,7 @@ export default function Navbar({
                 }
                 className="rounded-full border border-white/10 bg-white/[0.03] p-2 text-white/65 transition hover:bg-white/[0.08] hover:text-white"
               >
-                <LogOut size={15} />
+                <LogOut size={15} className="text-red-400" />
               </button>
             </>
           ) : (

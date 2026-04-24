@@ -87,7 +87,7 @@ export default function VisitsChart({ data }: { data: { labels: string[]; values
   };
 
   return (
-    <div className="h-64">
+    <div className="h-full min-h-[260px] w-full">
       <Line
         key={data.labels.join("-")}
         data={chartData}

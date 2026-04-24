@@ -96,7 +96,7 @@ export default function RevenueChart({ data }: { data: { labels: string[]; value
   };
 
   return (
-    <div className="h-64">
+    <div className="h-full min-h-[260px] w-full">
       <Bar
         key={data.labels.join("-")}
         data={chartData}

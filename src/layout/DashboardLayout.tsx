@@ -1,5 +1,6 @@
 import { Outlet } from "@tanstack/react-router";
 import { useState } from "react";
+import PageTransition from "../components/PageTransition";
 import Navbar from "./Navbar";
 import Sidebar from "./Sidebar";
 
@@ -32,7 +33,9 @@ export default function DashboardLayout() {
           <main className="relative flex-1 overflow-auto p-4 sm:p-5 lg:p-6">
             <div className="pointer-events-none absolute inset-0 rounded-3xl shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]" />
             <div className="relative z-10">
-              <Outlet />
+              <PageTransition>
+                <Outlet />
+              </PageTransition>
             </div>
 
           </main>

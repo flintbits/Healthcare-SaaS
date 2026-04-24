@@ -1,4 +1,5 @@
 import { Outlet, useLocation } from '@tanstack/react-router'
+import PageTransition from '../components/PageTransition'
 import Navbar from './Navbar'
 
 export default function PublicLayout() {
@@ -8,7 +9,9 @@ export default function PublicLayout() {
   return (
     <main>
       {!isLoginOrSignup && <Navbar />}
-      <Outlet />
+      <PageTransition>
+        <Outlet />
+      </PageTransition>
     </main>
   )
 }

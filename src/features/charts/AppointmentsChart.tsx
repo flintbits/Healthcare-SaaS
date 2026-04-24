@@ -9,8 +9,6 @@ export default function AppointmentsChart({ data }: { data: { labels: string[]; 
         label: "Monthly Appointments",
         data: data.values,
         backgroundColor: "rgba(34,197,94,0.8)",
-        borderColor: "#22c55e",
-        borderWidth: 1,
         borderRadius: 4,
         borderSkipped: false,
         hoverBackgroundColor: "rgba(34,197,94,0.9)",
@@ -89,5 +87,9 @@ export default function AppointmentsChart({ data }: { data: { labels: string[]; 
     },
   };
 
-  return <Bar data={chartData} options={options} />;
+  return (
+    <div className="h-full min-h-65 w-full">
+      <Bar data={chartData} options={options} />
+    </div>
+  );
 }

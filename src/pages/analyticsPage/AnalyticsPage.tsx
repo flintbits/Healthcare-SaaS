@@ -1,25 +1,20 @@
-import {
-  Activity,
-  ChevronLeft,
-  ChevronRight,
-  DollarSign,
-  FileBarChart2,
-  Users,
-} from "lucide-react";
+import { Activity, DollarSign, FileBarChart2, Users } from "lucide-react";
 import { lazy, Suspense, useEffect, useMemo, useState } from "react";
 import {
   getAppointmentStatusStats,
   getMonthlyRevenue,
   getMonthlyVisits,
-  getPatientStatusStats
+  getPatientStatusStats,
 } from "../../services/analytics.service";
 import { showNotification } from "../../services/notification.service";
-import { Button } from "../../shared/ui/Button/Button";
-import GlassCard from "../../shared/ui/Card/GlassCard/GlassCard";
 import { useAppointmentStore } from "../../store/appointment.store";
 import { useNotificationStore } from "../../store/notification.store";
 import { usePatientStore } from "../../store/patient.store";
 import { useVisitStore } from "../../store/visit.store";
+import AnalyticsChartCard from "./components/AnalyticsChartCard";
+import AnalyticsChartControls from "./components/AnalyticsChartControls";
+import AnalyticsHeader from "./components/AnalyticsHeader";
+import AnalyticsStatCard from "./components/AnalyticsStatCard";
 
 const AppointmentsChart = lazy(
   () => import("../../features/charts/AppointmentsChart")
@@ -39,6 +34,21 @@ type ChartStats = {
   values: number[];
 };
 
+const monthNames = [
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
+];
+
 export default function AnalyticsPage() {
   const { patients, fetchPatients } = usePatientStore();
   const { visits, fetchVisits } = useVisitStore();
@@ -47,40 +57,20 @@ export default function AnalyticsPage() {
 
   const [patientStats, setPatientStats] =
     useState<ChartStats | null>(null);
-
   const [visitStats, setVisitStats] =
     useState<ChartStats | null>(null);
-
   const [revenueStats, setRevenueStats] =
     useState<ChartStats | null>(null);
-
   const [appointmentStats, setAppointmentStats] =
     useState<ChartStats | null>(null);
-
   const [loadingReport, setLoadingReport] =
     useState(false);
-
   const [selectedYear, setSelectedYear] = useState(
     new Date().getFullYear()
   );
   const [selectedMonth, setSelectedMonth] = useState(
     new Date().getMonth() + 1
   );
-
-  const monthNames = [
-    "January",
-    "February",
-    "March",
-    "April",
-    "May",
-    "June",
-    "July",
-    "August",
-    "September",
-    "October",
-    "November",
-    "December",
-  ];
 
   useEffect(() => {
     fetchPatients();
@@ -95,7 +85,6 @@ export default function AnalyticsPage() {
 
   useEffect(() => {
     if (!visits.length) return;
-
     setVisitStats(getMonthlyVisits(visits));
     setRevenueStats(getMonthlyRevenue(visits));
   }, [visits]);
@@ -107,19 +96,13 @@ export default function AnalyticsPage() {
 
   const totalRevenue = useMemo(() => {
     return (
-      revenueStats?.values.reduce(
-        (sum, item) => sum + item,
-        0
-      ) ?? 0
+      revenueStats?.values.reduce((sum, item) => sum + item, 0) ?? 0
     );
   }, [revenueStats]);
 
   const totalVisits = useMemo(() => {
     return (
-      visitStats?.values.reduce(
-        (sum, item) => sum + item,
-        0
-      ) ?? 0
+      visitStats?.values.reduce((sum, item) => sum + item, 0) ?? 0
     );
   }, [visitStats]);
 
@@ -146,12 +129,10 @@ export default function AnalyticsPage() {
 
     setTimeout(() => {
       setLoadingReport(false);
-
       showNotification(
         "Report Ready",
         "Monthly analytics generated successfully."
       );
-
       add({
         id: String(Math.random()),
         title: "Analytics Report Ready",
@@ -161,149 +142,69 @@ export default function AnalyticsPage() {
   };
 
   return (
-    <div className="space-y-6">
-      {/* header */}
-      <section className="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
-        <div>
-          <p className="text-[10px] uppercase tracking-[0.30em] text-white/35">
-            Insights Center
-          </p>
+    <div className="space-y-8">
+      <AnalyticsHeader
+        title="Analytics Dashboard"
+        description="Track operational performance, patient activity, visits, and revenue trends across your healthcare network."
+        actionLabel="Generate Analytics Report"
+        onAction={generateReport}
+        actionLoading={loadingReport}
+      />
 
-          <h1 className="mt-3 text-4xl font-semibold tracking-[-0.04em] text-white">
-            Analytics Dashboard
-          </h1>
-
-          <p className="mt-3 max-w-2xl text-sm leading-7 text-white/55">
-            Track operational performance, patient activity,
-            visits, and revenue trends across your healthcare
-            network.
-          </p>
-        </div>
-
-        <Button
-          onClick={generateReport}
-          disabled={loadingReport}
-          className="px-6"
-        >
-          {loadingReport
-            ? "Generating Report..."
-            : "Generate Analytics Report"}
-        </Button>
-      </section>
-
-      {/* stats */}
-      <section className="grid gap-4 md:grid-cols-2 xl:grid-cols-5">
-        <GlassCard
+      <section className="grid gap-5 md:grid-cols-2 xl:grid-cols-5">
+        <AnalyticsStatCard
           title="Patients"
           subtitle="Registered users"
-          icon={<Users size={18} />}
-        >
-          <p className="text-3xl font-semibold text-white">
-            {patients.length}
-          </p>
-        </GlassCard>
-
-        <GlassCard
+          icon={<Users size={18} className="text-sky-400" />}
+          value={patients.length}
+        />
+        <AnalyticsStatCard
           title="Visits"
           subtitle="Total monthly visits"
-          icon={<Activity size={18} />}
-        >
-          <p className="text-3xl font-semibold text-white">
-            {totalVisits}
-          </p>
-        </GlassCard>
-
-        <GlassCard
+          icon={<Activity size={18} className="text-rose-400" />}
+          value={totalVisits}
+        />
+        <AnalyticsStatCard
           title="Appointments"
           subtitle="Scheduled sessions"
-          icon={<FileBarChart2 size={18} />}
-        >
-          <p className="text-3xl font-semibold text-white">
-            {appointments.length}
-          </p>
-        </GlassCard>
-
-        <GlassCard
+          icon={<FileBarChart2 size={18} className="text-amber-400" />}
+          value={appointments.length}
+        />
+        <AnalyticsStatCard
           title="Revenue"
           subtitle="Current cycle"
-          icon={<DollarSign size={18} />}
-        >
-          <p className="text-3xl font-semibold text-white">
-            ${totalRevenue.toLocaleString()}
-          </p>
-        </GlassCard>
-
-        <GlassCard
+          icon={<DollarSign size={18} className="text-emerald-400" />}
+          value={`$${totalRevenue.toLocaleString()}`}
+        />
+        <AnalyticsStatCard
           title="Reports"
           subtitle="Auto insights enabled"
-          icon={<FileBarChart2 size={18} />}
-        >
-          <p className="text-sm text-emerald-300">
-            Live Monitoring Active
-          </p>
-        </GlassCard>
+          icon={<FileBarChart2 size={18} className="text-violet-400" />}
+          value={
+            <span className="text-sm text-emerald-300">
+              Live Monitoring Active
+            </span>
+          }
+        />
       </section>
 
-      {/* chart controls */}
-      <section className="flex items-center justify-between mb-6">
-        <div className="flex items-center gap-4">
-          <button
-            onClick={handlePreviousMonth}
-            className="rounded-lg p-2 hover:bg-white/10 transition-colors"
-            title="Previous month"
-          >
-            <ChevronLeft size={20} className="text-white/60" />
-          </button>
+      <AnalyticsChartControls
+        monthNames={monthNames}
+        selectedMonth={selectedMonth}
+        selectedYear={selectedYear}
+        onPreviousMonth={handlePreviousMonth}
+        onNextMonth={handleNextMonth}
+        onMonthChange={setSelectedMonth}
+        onYearChange={setSelectedYear}
+      />
 
-          <div className="flex items-center gap-3">
-            <select
-              value={selectedMonth}
-              onChange={(e) => setSelectedMonth(parseInt(e.target.value))}
-              className="rounded-lg bg-white/5 border border-white/10 px-3 py-2 text-white text-sm hover:bg-white/10 transition-colors cursor-pointer"
-            >
-              {monthNames.map((month, idx) => (
-                <option key={month} value={idx + 1} className="bg-slate-900">
-                  {month}
-                </option>
-              ))}
-            </select>
-
-            <select
-              value={selectedYear}
-              onChange={(e) => setSelectedYear(parseInt(e.target.value))}
-              className="rounded-lg bg-white/5 border border-white/10 px-3 py-2 text-white text-sm hover:bg-white/10 transition-colors cursor-pointer"
-            >
-              {[selectedYear - 2, selectedYear - 1, selectedYear, selectedYear + 1].map(
-                (year) => (
-                  <option key={year} value={year} className="bg-slate-900">
-                    {year}
-                  </option>
-                )
-              )}
-            </select>
-          </div>
-
-          <button
-            onClick={handleNextMonth}
-            className="rounded-lg p-2 hover:bg-white/10 transition-colors"
-            title="Next month"
-          >
-            <ChevronRight size={20} className="text-white/60" />
-          </button>
-        </div>
-
-        <span className="text-sm text-white/40">
-          {monthNames[selectedMonth - 1]} {selectedYear}
-        </span>
-      </section>
-
-      {/* charts */}
-      <section className="grid gap-4 xl:grid-cols-2">
-        <GlassCard
+      <section className="grid gap-8 xl:grid-cols-2">
+        <AnalyticsChartCard
           title="Revenue Growth"
           subtitle="Monthly performance"
           icon={<DollarSign size={18} />}
-          className="h-90"
+          noBackground
+          className="h-100 border-none bg-transparent"
         >
           <Suspense
             fallback={
@@ -312,17 +213,20 @@ export default function AnalyticsPage() {
               </div>
             }
           >
-            {revenueStats && (
-              <RevenueChart data={revenueStats} />
-            )}
+            {revenueStats && <RevenueChart data={revenueStats} />}
           </Suspense>
-        </GlassCard>
 
-        <GlassCard
+          <p className="text-sm leading-6 text-white/55">
+            See how revenue evolves through the year so you can identify high-performing months and areas to optimize financial growth.
+          </p>
+        </AnalyticsChartCard>
+
+        <AnalyticsChartCard
           title="Patient Status"
           subtitle="Distribution overview"
           icon={<Users size={18} />}
-          className="h-90"
+          noBackground
+          className="h-100 border-none bg-transparent"
         >
           <Suspense
             fallback={
@@ -331,17 +235,20 @@ export default function AnalyticsPage() {
               </div>
             }
           >
-            {patientStats && (
-              <PatientsChart data={patientStats} />
-            )}
+            {patientStats && <PatientsChart data={patientStats} />}
           </Suspense>
-        </GlassCard>
 
-        <GlassCard
+          <p className="text-sm leading-6 text-white/55">
+            Understand the balance between active, inactive, and new patients to improve engagement and retention.
+          </p>
+        </AnalyticsChartCard>
+
+        <AnalyticsChartCard
           title="Monthly Visits"
           subtitle="Engagement trend"
           icon={<Activity size={18} />}
-          className="h-90 xl:col-span-2"
+          noBackground
+          className="h-105 border-none bg-transparent xl:col-span-2"
         >
           <Suspense
             fallback={
@@ -357,13 +264,18 @@ export default function AnalyticsPage() {
               />
             )}
           </Suspense>
-        </GlassCard>
 
-        <GlassCard
+          <p className="text-sm leading-6 text-white/55">
+            Track clinic or service usage over time so you can spot appointment volume spikes and staffing needs.
+          </p>
+        </AnalyticsChartCard>
+
+        <AnalyticsChartCard
           title="Appointment Status"
           subtitle="Scheduled sessions overview"
           icon={<FileBarChart2 size={18} />}
-          className="h-90 xl:col-span-2"
+          noBackground
+          className="h-105 border-none bg-transparent xl:col-span-2"
         >
           <Suspense
             fallback={
@@ -379,7 +291,11 @@ export default function AnalyticsPage() {
               />
             )}
           </Suspense>
-        </GlassCard>
+
+          <p className="text-sm leading-6 text-white/55">
+            View how appointments are distributed by status to monitor booking efficiency and cancellation trends.
+          </p>
+        </AnalyticsChartCard>
       </section>
     </div>
   );

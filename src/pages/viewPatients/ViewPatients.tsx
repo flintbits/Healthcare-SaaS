@@ -79,7 +79,7 @@ export default function ViewPatients() {
 
         <div className="flex flex-wrap gap-3">
           <Button className="px-5">
-            <UserPlus size={16} />
+            <UserPlus size={16} className="text-emerald-300" />
             <span className="ml-2">
               Add Patient
             </span>
@@ -97,7 +97,7 @@ export default function ViewPatients() {
 
             <Users
               size={18}
-              className="text-white/60"
+              className="text-sky-400"
             />
           </div>
 
@@ -173,7 +173,10 @@ export default function ViewPatients() {
                 : "text-white/60 hover:text-white",
             ].join(" ")}
           >
-            <LayoutList size={16} />
+            <LayoutList
+              size={16}
+              className={view === "list" ? "text-black" : "text-white/60"}
+            />
             List
           </button>
 
@@ -188,7 +191,10 @@ export default function ViewPatients() {
                 : "text-white/60 hover:text-white",
             ].join(" ")}
           >
-            <Grid2X2 size={16} />
+            <Grid2X2
+              size={16}
+              className={view === "grid" ? "text-black" : "text-white/60"}
+            />
             Grid
           </button>
         </div>

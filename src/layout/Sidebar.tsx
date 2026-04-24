@@ -18,21 +18,25 @@ const navLinks = [
     label: "Dashboard",
     to: "/dashboard",
     icon: LayoutDashboard,
+    iconClass: "text-indigo-400",
   },
   {
     label: "Analytics",
     to: "/analytics",
     icon: Activity,
+    iconClass: "text-sky-400",
   },
   {
     label: "Add Patient",
     to: "/addPatient",
     icon: UserPlus,
+    iconClass: "text-emerald-400",
   },
   {
     label: "Patients",
     to: "/patients",
     icon: Users,
+    iconClass: "text-rose-400",
   },
 ];
 
@@ -104,8 +108,8 @@ export default function Sidebar({ open, onClose }: Props) {
                 className="group flex items-center justify-between rounded-2xl border border-white/8 bg-white/[0.03] px-4 py-3 text-xs font-medium tracking-[-0.01em] text-white/65 transition-all duration-200 hover:border-white/15 hover:bg-white/[0.06] hover:text-white"
               >
                 <div className="flex items-center gap-3">
-                  <div className="flex h-8 w-8 items-center justify-center rounded-xl border border-white/10 bg-white/[0.04]">
-                    <Icon size={15} />
+                  <div className="flex h-8 w-8 items-center justify-center rounded-xl border border-white/10 bg-white/[0.04] text-slate-200">
+                    <Icon size={15} className={link.iconClass} />
                   </div>
 
                   <span>{link.label}</span>

@@ -22,33 +22,33 @@ export default function AuthLayout({ type }: AuthLayoutProps) {
         <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-size-[64px_64px]" />
       </div>
 
-      <section className="mx-auto grid min-h-screen max-w-7xl items-center gap-16 px-6 py-10 lg:grid-cols-[1fr_520px]">
+      <section className="mx-auto grid min-h-screen max-w-7xl items-center gap-24 px-6 py-20 lg:grid-cols-[1fr_520px]">
         {/* LEFT SIDE */}
-        <div className="hidden lg:block">
+        <div className="hidden lg:block max-w-xl space-y-8">
           <p className="text-xs uppercase tracking-[0.34em] text-white/45">
-            Swiss Precision • Linear Simplicity
+            HealthOS • Connected Care
           </p>
 
           <h1 className="mt-6 text-7xl font-semibold leading-[0.92] tracking-[-0.05em]">
             {isLogin ? (
               <>
-                Welcome
+                Sign in
                 <br />
-                <span className="text-white/45">Back.</span>
+                <span className="text-white/45">to HealthOS.</span>
               </>
             ) : (
               <>
-                Create
+                Create your
                 <br />
-                Account.
+                <span className="text-white/45">HealthOS account.</span>
               </>
             )}
           </h1>
 
           <p className="mt-8 max-w-xl text-lg leading-8 text-white/60">
             {isLogin
-              ? "Secure access to your healthcare workspace, analytics, records and operations."
-              : "Start using the modern operating layer for healthcare teams, clinics and enterprise systems."}
+              ? "Continue managing patients, appointments, analytics and operations from a single secure workspace."
+              : "Join HealthOS to streamline care workflows, track visits, and keep patient data in one intelligent platform."}
           </p>
         </div>
 

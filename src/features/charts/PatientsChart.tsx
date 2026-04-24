@@ -23,8 +23,6 @@ export default function PatientsChart({
         backgroundColor: data.labels.map(
           (label) => statusColors[label] || "rgba(99,102,241,0.8)"
         ),
-        borderColor: "rgba(255,255,255,0.08)",
-        borderWidth: 1,
         hoverBackgroundColor: "rgba(255,255,255,0.95)",
         maxBarThickness: 42,
       },
