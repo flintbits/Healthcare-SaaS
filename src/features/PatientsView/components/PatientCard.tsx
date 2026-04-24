@@ -60,8 +60,9 @@ export const PatientCard = ({
 
   return (
     <button
+      type="button"
       onClick={handlePatientView}
-      className="group w-full overflow-hidden rounded-[28px] border border-white/8 bg-white/3 p-5 text-left backdrop-blur-2xl transition duration-300 hover:-translate-y-1 hover:border-white/14 hover:bg-white/5"
+      className="group flex h-full w-full flex-col overflow-hidden rounded-[28px] border border-white/8 bg-white/3 p-5 text-left backdrop-blur-2xl transition duration-300 hover:-translate-y-1 hover:border-white/14 hover:bg-white/5"
     >
       {/* top */}
       <div className="flex items-start justify-between gap-4">
@@ -125,7 +126,7 @@ export const PatientCard = ({
           </span>
         </div>
 
-        <div className="flex items-center gap-3 rounded-2xl border border-white/6 bg-white/2 px-4 py-3">
+        <div className="flex min-w-0 items-center gap-3 rounded-2xl border border-white/6 bg-white/2 px-4 py-3">
           <Stethoscope
             size={15}
             className="text-white/45"
@@ -135,7 +136,7 @@ export const PatientCard = ({
             Doctor
           </span>
 
-          <span className="ml-auto truncate pl-3 text-sm text-white">
+          <span className="ml-auto min-w-0 truncate pl-3 text-sm text-white">
             {patient.doctor}
           </span>
         </div>

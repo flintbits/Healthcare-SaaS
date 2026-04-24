@@ -1,5 +1,8 @@
 import {
   Activity,
+  AlertTriangle,
+  CheckCircle,
+  Clock,
   Grid2X2,
   LayoutList,
   Search,
@@ -10,6 +13,28 @@ import { useEffect, useMemo, useState } from "react";
 import { PatientsView } from "../../features/PatientsView/components/PatientsView";
 import { Button } from "../../shared/ui/Button/Button";
 import { usePatientStore } from "../../store/patient.store";
+
+function normalizeStatus(status?: string) {
+  const value = String(status ?? "").trim().toLowerCase();
+
+  if (value.includes("cirt") || value.includes("crit")) {
+    return "critical" as const;
+  }
+
+  if (value.includes("discharg")) {
+    return "discharged" as const;
+  }
+
+  if (value.includes("pend")) {
+    return "pending" as const;
+  }
+
+  if (value.includes("activ")) {
+    return "active" as const;
+  }
+
+  return undefined;
+}
 
 export default function ViewPatients() {
   const [view, setView] = useState("list");
@@ -48,15 +73,32 @@ export default function ViewPatients() {
     );
   }, [patients, search]);
 
-  const activePatients =
-    patients.filter(
-      (p: any) => p.status === "active"
-    ).length;
+  const statusCounts = useMemo(() => {
+    return patients.reduce(
+      (counts, patient: any) => {
+        const normalizedStatus = normalizeStatus(
+          patient.status
+        );
 
-  const criticalPatients =
-    patients.filter(
-      (p: any) => p.status === "critical"
-    ).length;
+        if (normalizedStatus) {
+          counts[normalizedStatus] += 1;
+        }
+
+        return counts;
+      },
+      {
+        active: 0,
+        critical: 0,
+        discharged: 0,
+        pending: 0,
+      }
+    );
+  }, [patients]);
+
+  const activePatients = statusCounts.active;
+  const criticalPatients = statusCounts.critical;
+  const dischargedPatients = statusCounts.discharged;
+  const pendingPatients = statusCounts.pending;
 
   return (
     <div className="space-y-6">
@@ -88,7 +130,7 @@ export default function ViewPatients() {
       </section>
 
       {/* stat cards */}
-      <section className="grid gap-4 md:grid-cols-3">
+      <section className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-5">
         <div className="rounded-3xl border border-white/8 bg-white/3 p-5 backdrop-blur-2xl">
           <div className="flex items-center justify-between">
             <p className="text-[10px] uppercase tracking-[0.28em] text-white/35">
@@ -129,7 +171,7 @@ export default function ViewPatients() {
               Critical
             </p>
 
-            <Activity
+            <AlertTriangle
               size={18}
               className="text-red-300"
             />
@@ -137,6 +179,40 @@ export default function ViewPatients() {
 
           <p className="mt-4 text-4xl font-semibold text-white">
             {criticalPatients}
+          </p>
+        </div>
+
+        <div className="rounded-3xl border border-white/8 bg-white/3 p-5 backdrop-blur-2xl">
+          <div className="flex items-center justify-between">
+            <p className="text-[10px] uppercase tracking-[0.28em] text-white/35">
+              Discharged
+            </p>
+
+            <CheckCircle
+              size={18}
+              className="text-cyan-300"
+            />
+          </div>
+
+          <p className="mt-4 text-4xl font-semibold text-white">
+            {dischargedPatients}
+          </p>
+        </div>
+
+        <div className="rounded-3xl border border-white/8 bg-white/3 p-5 backdrop-blur-2xl">
+          <div className="flex items-center justify-between">
+            <p className="text-[10px] uppercase tracking-[0.28em] text-white/35">
+              Pending
+            </p>
+
+            <Clock
+              size={18}
+              className="text-amber-300"
+            />
+          </div>
+
+          <p className="mt-4 text-4xl font-semibold text-white">
+            {pendingPatients}
           </p>
         </div>
       </section>
