@@ -11,17 +11,20 @@ export const Button: React.FC<ButtonProps> = ({
     ...props
 }) => {
     const base =
-        "px-4 py-2 rounded-lg font-medium transition-colors duration-200 border cursor-pointer";
+        "inline-flex items-center justify-center gap-2 rounded-full px-5 py-3 text-sm font-medium tracking-[-0.01em] transition-all duration-300 border backdrop-blur-xl cursor-pointer select-none whitespace-nowrap disabled:pointer-events-none disabled:opacity-50";
 
-    const variants: Record<typeof variant, string> = {
+    const variants: Record<NonNullable<ButtonProps["variant"]>, string> = {
+        /* Linear + Swiss + Glass Primary */
         accent:
-            "bg-(--color-accent) text-white border border-accent hover:opacity-90 active:opacity-80",
+            "border-white/20 bg-white text-black shadow-[0_8px_30px_rgba(255,255,255,0.08)] hover:bg-white/90 hover:scale-[1.02] active:scale-[0.98]",
 
+        /* Frosted Outline */
         outline:
-            "bg-transparent text-accent border-accent hover:bg-accent hover:text-white",
+            "border-white/15 bg-white/[0.04] text-white backdrop-blur-2xl hover:bg-white/[0.08] hover:border-white/25 hover:scale-[1.02] active:scale-[0.98]",
 
+        /* Minimal Ghost */
         ghost:
-            "bg-transparent border-transparent text-accent hover:bg-accent/10",
+            "border-transparent bg-transparent text-white/70 hover:bg-white/[0.05] hover:text-white hover:scale-[1.02] active:scale-[0.98]",
     };
 
     return (

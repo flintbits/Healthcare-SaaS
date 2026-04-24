@@ -61,5 +61,5 @@ export default function useFormEngine<T extends BaseField>(formSchema: T[]) {
   }
 
 
-  return { formData, onChange, checkAllFields, errors }
+  return { formData, onChange, checkAllFields, errors, setFormData }
 }

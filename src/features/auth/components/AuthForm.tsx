@@ -49,8 +49,8 @@ export default function AuthForm({ schema, formType, }: FormProps) {
   )
 
   return (
-    <section className="w-full max-w-md mx-auto px-4 sm:px-6 md:px-0 flex flex-col">
-      <Typography as="h1" weight="bold">
+    <section className="w-full max-w-md mx-auto px-4 sm:px-6 md:px-0 flex flex-col space-y-8">
+      <Typography as="h1" weight="bold" className="text-3xl font-semibold leading-tight sm:text-4xl">
         {isLogin
           ? "Access Your Account"
           : "Create Your Account"}
@@ -62,51 +62,47 @@ export default function AuthForm({ schema, formType, }: FormProps) {
         handleSubmit={handleSubmit}
         onChange={onChange}
         errors={errors}
+        submitText={isLogin ? "Sign In" : "Get Started"}
       />
-
-      {formType === "login" ? (
-        <Typography
-          as="p"
-          weight="light"
-          size="text-base"
-          className="mt-3"
-        >
-          Dont have an Account?{" "}
-          <Link
-            to="/signup"
-            className="text-(--color-accent) no-underline"
-          >
-            Sign up
-          </Link>
-        </Typography>
-      ) : (
-        <Typography
-          as="p"
-          weight="light"
-          size="text-base"
-          className="mt-3"
-        >
-          Have an Account?{" "}
-          <Link
-            to="/login"
-            className="text-(--color-accent) no-underline"
-          >
-            Log In
-          </Link>
-        </Typography>
-      )}
 
       <Typography
         as="p"
         weight="light"
         size="text-base"
-        className="mt-3"
+        className="text-white/70"
+      >
+        {isLogin ? (
+          <>Don&apos;t have an account? {" "}
+            <Link
+              to="/signup"
+              className="text-white/90 underline decoration-white/15 transition hover:text-white"
+            >
+              Sign up
+            </Link>
+          </>
+        ) : (
+          <>Have an account? {" "}
+            <Link
+              to="/login"
+              className="text-white/90 underline decoration-white/15 transition hover:text-white"
+            >
+              Log in
+            </Link>
+          </>
+        )}
+      </Typography>
+
+      <Typography
+        as="p"
+        weight="light"
+        size="text-base"
+        className="pt-1 text-white/70"
       >
         <Link
           to="/"
-          className="text-(--color-accent) no-underline"
+          className="text-white/90 underline decoration-white/15 transition hover:text-white"
         >
-          Go to Home?
+          Back to Home
         </Link>
       </Typography>
 

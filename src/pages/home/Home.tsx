@@ -1,49 +1,35 @@
-import { Link } from "@tanstack/react-router"
-import { Button } from "../../shared/ui/Button/Button"
-
+import { useAuth } from "../../app/Providers/AuthContext"
+import FeaturesSection from "./FeaturesSection"
+import Footer from "./Footer/Footer"
+import HeroSection from "./HeroSection/HeroSection"
+import PricingSection from "./PricingSection"
+import TrustBar from "./TrustBar"
 
 export default function Home() {
+    const { user } = useAuth()
 
     return (
-        <div className="min-h-screen text-white relative">
+        <main className="min-h-screen overflow-x-hidden bg-[#05070b] text-white selection:bg-white/20">
+            {/* background */}
+            <div className="fixed inset-0 -z-10">
+                <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(255,255,255,0.08),transparent_28%),radial-gradient(circle_at_80%_20%,rgba(99,102,241,0.14),transparent_24%),radial-gradient(circle_at_bottom_right,rgba(255,255,255,0.04),transparent_22%)]" />
+                <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:64px_64px]" />
+            </div>
 
-            <div
-                className="absolute inset-0 bg-cover bg-center"
-                style={{
-                    backgroundImage:
-                        "url(https://images.unsplash.com/photo-1628771065518-0d82f1938462?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D)",
-                }}
-            />
+            {/* Hero Section */}
+            <HeroSection />
 
-            <div className="absolute inset-0 bg-black/20" />
+            {/* Trust Bar - hidden for logged in users */}
+            {!user && <TrustBar />}
 
-            <section className="relative max-w-7xl mx-auto px-6 py-12 min-h-screen flex items-center">
+            {/* Features - only shown when not logged in */}
+            {!user && <FeaturesSection />}
 
-                <div className="flex flex-col gap-6 text-center md:text-left max-w-xl">
+            {/* Pricing - only shown when not logged in */}
+            {!user && <PricingSection />}
 
-                    <h1 className="text-4xl md:text-5xl font-bold leading-tight">
-                        Modern Healthcare
-                        <span className="text-(--color-accent)">
-                            SaaS Platform
-                        </span>
-                    </h1>
-
-                    <p className="text-white text-lg">
-                        Manage patients in one secure,
-                        fast and scalable healthcare management system.
-                    </p>
-
-                    <div>
-                        <Link to="/dashboard">
-                            <Button variant="outline" className="px-6 py-3 text-lg">
-                                Go to Dashboard
-                            </Button>
-                        </Link>
-                    </div>
-
-                </div>
-
-            </section>
-        </div>
+            {/* Footer */}
+            <Footer />
+        </main>
     )
 }
